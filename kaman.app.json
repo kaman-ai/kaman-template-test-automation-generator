@@ -1,0 +1,72 @@
+{
+  "name": "Test Automation Generator",
+  "agents": {
+    "code_reader": "dc3a0fa8-96f6-5221-ae51-72da00c6c8ce",
+    "conventions": "a6733b76-90af-51eb-a671-3749374c9f73",
+    "test_writer": "f4213ba2-951e-50c2-a666-a780236641b7",
+    "ci_runner": "c2d1c980-d8c1-5b22-af54-f76668e15140"
+  },
+  "workflows": {
+    "flow": "85fc4a03-a8ba-574a-9ee6-7f19fb46c213"
+  },
+  "ui": {
+    "title": "Test Automation Generator",
+    "tagline": "Writes the tests a pull request is missing: reads the change and your testing conventions, plans the tests, writes them on a branch, runs them in CI, and comments with the coverage gain - failing tests go to a developer, who decides whether they found a bug or are wrong.",
+    "actions": [
+      {
+        "id": "run",
+        "label": "Run: Tests for a pull request",
+        "description": "A pull request opens. Kaman reads what changed and your testing conventions in parallel, plans the missing tests, writes them on a branch, runs them in CI, and comments on the pull request when they pass and add coverage; failing or coverage-reducing tests go to a developer first.",
+        "kind": "workflow",
+        "target": "flow",
+        "wrap": "payload",
+        "inputs": [
+          {
+            "name": "repo",
+            "label": "Repo",
+            "kind": "text",
+            "default": "payments-service"
+          },
+          {
+            "name": "pull_request",
+            "label": "Pull request",
+            "kind": "number",
+            "default": 482
+          },
+          {
+            "name": "base",
+            "label": "Base",
+            "kind": "text",
+            "default": "main"
+          },
+          {
+            "name": "changed_files",
+            "label": "Changed files",
+            "kind": "json",
+            "default": [
+              "src/refunds/calculator.py",
+              "src/refunds/__init__.py",
+              "README.md"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "ask",
+        "label": "Ask the Change Reader",
+        "description": "Reads a pull request's changes and the tests that already cover them.",
+        "kind": "agent",
+        "target": "code_reader",
+        "prompt": "{{question}}",
+        "inputs": [
+          {
+            "name": "question",
+            "label": "Your question",
+            "kind": "text",
+            "default": "Read pull request 482 of payments-service."
+          }
+        ]
+      }
+    ]
+  }
+}
