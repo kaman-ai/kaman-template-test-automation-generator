@@ -1,3 +1,7 @@
+@import "@kamanai/ui-theme";
+/* The scenario maps (GeoMap) draw with MapLibre; its stylesheet positions
+   the map canvas and controls. Import it here, once, for every screen. */
+@import "maplibre-gl/dist/maplibre-gl.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

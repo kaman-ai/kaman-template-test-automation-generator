@@ -1,72 +1,28 @@
 {
   "name": "Test Automation Generator",
   "agents": {
-    "code_reader": "dc3a0fa8-96f6-5221-ae51-72da00c6c8ce",
-    "conventions": "a6733b76-90af-51eb-a671-3749374c9f73",
-    "test_writer": "f4213ba2-951e-50c2-a666-a780236641b7",
-    "ci_runner": "c2d1c980-d8c1-5b22-af54-f76668e15140"
+    "code_reader": "96bf066b-77e3-5e29-9382-b021f0b90406",
+    "conventions": "3b187373-96af-59dc-8395-163a11d2fa4c",
+    "test_writer": "7a8eeea2-35f9-5b0e-8c23-adc101854cad",
+    "ci_runner": "47153f15-4bba-5d29-9aa3-5b6d33ba6fa2"
   },
   "workflows": {
-    "flow": "85fc4a03-a8ba-574a-9ee6-7f19fb46c213"
+    "flow": "0a1509c5-303f-5f10-b877-fecc34e5a6d5"
+  },
+  "scenarios": {
+    "desk": "fc5abd5d-45e1-5dbe-aedf-eb8f5e598c68"
   },
   "ui": {
     "title": "Test Automation Generator",
     "tagline": "Writes the tests a pull request is missing: reads the change and your testing conventions, plans the tests, writes them on a branch, runs them in CI, and comments with the coverage gain - failing tests go to a developer, who decides whether they found a bug or are wrong.",
-    "actions": [
-      {
-        "id": "run",
-        "label": "Run: Tests for a pull request",
-        "description": "A pull request opens. Kaman reads what changed and your testing conventions in parallel, plans the missing tests, writes them on a branch, runs them in CI, and comments on the pull request when they pass and add coverage; failing or coverage-reducing tests go to a developer first.",
-        "kind": "workflow",
-        "target": "flow",
-        "wrap": "payload",
-        "inputs": [
-          {
-            "name": "repo",
-            "label": "Repo",
-            "kind": "text",
-            "default": "payments-service"
-          },
-          {
-            "name": "pull_request",
-            "label": "Pull request",
-            "kind": "number",
-            "default": 482
-          },
-          {
-            "name": "base",
-            "label": "Base",
-            "kind": "text",
-            "default": "main"
-          },
-          {
-            "name": "changed_files",
-            "label": "Changed files",
-            "kind": "json",
-            "default": [
-              "src/refunds/calculator.py",
-              "src/refunds/__init__.py",
-              "README.md"
-            ]
-          }
-        ]
-      },
-      {
-        "id": "ask",
-        "label": "Ask the Change Reader",
-        "description": "Reads a pull request's changes and the tests that already cover them.",
-        "kind": "agent",
-        "target": "code_reader",
-        "prompt": "{{question}}",
-        "inputs": [
-          {
-            "name": "question",
-            "label": "Your question",
-            "kind": "text",
-            "default": "Read pull request 482 of payments-service."
-          }
-        ]
-      }
-    ]
+    "run": "Run: Tests for a pull request",
+    "chat": {
+      "agent": "code_reader",
+      "title": "Ask the Change Reader",
+      "suggestions": [
+        "get_pull_files returned this patch: +def refund_amount(order_total, fee_pct):\n+    if order_total <= 0:\n+        return 0\n+    return round(order_total * (1 - fee_pct / 100), 2)\ngithub_list found no tests for src/refunds/calculator.py. Report.",
+        "Read pull request 482 of payments-service."
+      ]
+    }
   }
 }

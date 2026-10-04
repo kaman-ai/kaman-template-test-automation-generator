@@ -1,12 +1,13 @@
 import "./globals.css";
-import { app } from "./lib/kaman";
 
-export const metadata = { title: app.ui.title };
+import manifest from "../kaman.app.json";
+
+export const metadata = { title: manifest.ui.title };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="bg-slate-50 text-slate-900 antialiased">{children}</body>
+      <body className="bg-background text-foreground antialiased">{children}</body>
     </html>
   );
 }
